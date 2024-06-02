@@ -15,7 +15,6 @@ import ru.sonder.carsharing.models.User;
 import ru.sonder.carsharing.repositories.UserRepository;
 import ru.sonder.carsharing.services.UserService;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +45,9 @@ public class UserServiceImplementation implements UserService {
     }
 
     public User getUser(String username) {
-        return userRepository.getByUsername(username);
+        User user = userRepository.getByUsername(username);
+        Hibernate.initialize(user.getRents());
+        return user;
     }
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,7 +62,11 @@ public class UserServiceImplementation implements UserService {
     }
 
     public List<User> getTopUsers() {
-        return new ArrayList<>();
+        List<User> allUsers = userRepository.findAll();
+        List<User> sortedUsers = allUsers.stream()
+                .sorted(Comparator.comparingInt(user -> -user.getRents().size()))
+                .collect(Collectors.toList());
+        return sortedUsers.subList(0, Math.min(sortedUsers.size(), 10));
     }
 
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
