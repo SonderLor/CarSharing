@@ -1,7 +1,10 @@
-Учебный проект "Каршеринг"
-Данный проект был создан для того, чтобы научиться взаимодействовать в команде, разрабатывать приложение совместно.
-Написан на языке программирования Java с применением фреймворка Spring, используется система сборки Gradle, осуществляет имитацию сервиса каршеринга.
-Зависимости проекта:
+# Учебный проект "Каршеринг"
+
+Данный проект был создан для того, чтобы научиться взаимодействовать в команде, разрабатывать приложение совместно. Написан на языке программирования Java с применением фреймворка Spring, используется система сборки Gradle, осуществляет имитацию сервиса каршеринга.
+
+## Зависимости проекта
+
+```groovy
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
@@ -23,6 +26,10 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
-Команды для запуска из консоли:
+
+## Команды для запуска из консоли
+
+```sh
 gradle build
 gradle run
+```
