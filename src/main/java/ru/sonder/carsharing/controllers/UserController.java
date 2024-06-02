@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.sonder.carsharing.DTOs.UserDTO;
+import ru.sonder.carsharing.models.Rent;
+import ru.sonder.carsharing.models.RentWithCarDescription;
 import ru.sonder.carsharing.models.User;
 import ru.sonder.carsharing.services.UserService;
 
@@ -34,6 +36,13 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profilePage(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        User currentUser = userService.getUser(userDetails.getUsername());
+        List<Rent> userRents = currentUser.getRents();
+        List<RentWithCarDescription> rentsWithDescriptions = userRents.stream()
+                .map(rent -> new RentWithCarDescription(rent, rent.getCar().getBrand() + ", " + rent.getCar().getModel() + ", " + rent.getCar().getYear()))
+                .collect(Collectors.toList());
+        model.addAttribute("rentsWithDescriptions", rentsWithDescriptions);
+        model.addAttribute("userDetails", userDetails);
         return "profile";
     }
 
